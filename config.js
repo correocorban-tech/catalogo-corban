@@ -7,7 +7,7 @@
 window.CONFIG_SITIO = {
   // URL del script publicado (Implementar → Administrar implementaciones → "URL de la aplicación web").
   // Termina en /exec. Si se crea una implementación NUEVA, la URL cambia y hay que pegarla acá.
-  urlScript: 'https://script.google.com/macros/s/AKfycbyyVcDZYCw2fdRXMLhKn4cl_pf6rFvqf4eRbPnv5N1ZeUGP2BtNVJtdfWDqSA82NORytw/exec',
+  urlScript: 'https://script.google.com/macros/s/AKfycbx2AMNQW8640zx0crLPdiN3s6Rj1xIz_TEqX7xXw6RX3pGNxGSESn2xQqfo312pjUWyQw/exec',
 
   // WhatsApp de respaldo: se usa solo si el catálogo no carga, para que el cliente no se quede sin salida.
   // Con código de país, sin + ni espacios.

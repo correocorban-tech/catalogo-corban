@@ -18,11 +18,15 @@
   <title>Catálogo</title>
   <meta name="description" content="Catálogo de productos. Armá tu pedido y envialo por WhatsApp o por mail.">
   <meta name="theme-color" content="#1747a6">
+  <!-- La dirección oficial del sitio, para Google. Si cambia el dominio, se cambia acá. -->
+  <link rel="canonical" href="https://corban.com.ar/">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fuentes/montserrat.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="estilos.css">
-  <script src="config.js"></script>
-  <script src="app.js" defer></script>
+  <!-- El "?v=…" obliga a los celulares a bajar la versión nueva aunque tengan guardada la vieja.
+       Cada vez que cambia estilos.css, config.js o app.js, se cambia este número (ej. 2026-10-22 → 2026-11-05). -->
+  <link rel="stylesheet" href="estilos.css?v=2026-10-22c">
+  <script src="config.js?v=2026-10-22c"></script>
+  <script src="app.js?v=2026-10-22c" defer></script>
 </head>
 <body>
   <!-- GOOGLE TAG MANAGER (2 de 2): acá va el fragmento <noscript>. -->

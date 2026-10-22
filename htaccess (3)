@@ -1,0 +1,55 @@
+# =====================================================================
+# Ajustes del servidor para DonWeb (y cualquier hosting con Apache o LiteSpeed).
+# Es el equivalente del archivo _headers que usa Netlify. Netlify ignora este archivo,
+# y Apache ignora _headers: pueden convivir en la carpeta sin problema.
+# En DonWeb, las mismas reglas están también en donweb-raiz/.htaccess (va en public_html).
+# =====================================================================
+
+# 1. Siempre por HTTPS (conexión segura, el candado del navegador).
+#    Requiere tener activado el certificado SSL en el panel del hosting.
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# En DonWeb el sitio vive en la carpeta /catalogo, pero se ve en la dirección principal.
+# Si alguien entra escribiendo /catalogo/… (o /index.html), se lo manda a la dirección
+# principal, así Google conoce una sola: corban.com.ar/
+RewriteCond %{THE_REQUEST} \s/catalogo/
+RewriteRule ^index\.html$ / [L,R=301]
+RewriteCond %{THE_REQUEST} \s/catalogo/
+RewriteRule ^(.*)$ /$1 [L,R=301]
+RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
+RewriteRule ^ / [L,R=301]
+
+# 2. Cuánto guarda el celular del visitante cada archivo. DonWeb, por su cuenta, guarda
+#    estilos, fuentes y fotos 7 días: esto lo corrige. El código del sitio (html, css, js)
+#    se revisa siempre, así un cambio publicado se ve enseguida.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType text/javascript "access plus 0 seconds"
+  ExpiresByType image/webp "access plus 1 day"
+  ExpiresByType image/jpeg "access plus 1 day"
+  ExpiresByType image/png "access plus 1 day"
+  ExpiresByType image/svg+xml "access plus 1 day"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # 3. Seguridad básica
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # 4. Lo mismo que el punto 2, para servidores que no usan mod_expires.
+  <FilesMatch "\.(html|js|css)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+</IfModule>

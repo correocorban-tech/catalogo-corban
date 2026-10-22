@@ -161,7 +161,10 @@
     try {
       if (!CFG.urlScript) throw new Error('Falta la URL del script en config.js');
       const url = CFG.urlScript + (CFG.urlScript.includes('?') ? '&' : '?') + 'accion=catalogo';
-      const datos = await pedirJSON(url, {}, 20000);
+      // cache: 'no-store': Google redirige cada pedido a una dirección de un solo uso. Si el navegador
+      // guarda esa redirección, la próxima vez va a una dirección vencida y Google responde 404.
+      // (No es una cabecera: no dispara la verificación previa de CORS.)
+      const datos = await pedirJSON(url, { cache: 'no-store' }, 20000);
       if (!datos || !datos.ok || !Array.isArray(datos.productos)) throw new Error((datos && datos.error) || 'Respuesta inválida');
       guardarLocal(CLAVE_CACHE, { guardado: Date.now(), datos });
       aplicarCatalogo(datos, false);
