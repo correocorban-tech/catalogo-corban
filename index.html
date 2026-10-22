@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <!-- ================================================================
+       GOOGLE TAG MANAGER (1 de 2): pegá acá, lo más arriba posible del <head>,
+       el fragmento <script> que te da tagmanager.google.com (Administrar → Instalar).
+       El ID tiene la forma GTM-XXXXXXX y sale de TU cuenta: no lo inventes.
+       ================================================================ -->
+
+  <!-- ================================================================
+       GOOGLE TAG MANAGER (2 de 2): el segundo fragmento (<noscript>…</noscript>)
+       NO va en el <head>: va inmediatamente después de la etiqueta <body>.
+       Ahí dejé un comentario marcando el lugar exacto.
+       ================================================================ -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo</title>
+  <meta name="description" content="Catálogo de productos. Armá tu pedido y envialo por WhatsApp o por mail.">
+  <meta name="theme-color" content="#1747a6">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="fuentes/montserrat.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="estilos.css">
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- GOOGLE TAG MANAGER (2 de 2): acá va el fragmento <noscript>. -->
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera-fila">
+      <a class="marca" href="./" id="nombre-negocio">Catálogo</a>
+      <!-- Menú de secciones (en computadora). Lo arma app.js con la hoja "Páginas" de la planilla. -->
+      <nav class="menu" id="menu" aria-label="Secciones"></nav>
+      <div class="cabecera-botones">
+        <button type="button" class="boton-menu" id="abrir-menu" aria-haspopup="dialog" aria-controls="menu-movil" aria-label="Menú" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="boton-pedido" id="abrir-pedido" aria-haspopup="dialog" aria-controls="panel-pedido">
+          <span>Tu pedido</span>
+          <span class="contador" id="contador" aria-hidden="true">0</span>
+          <span class="solo-lectores" id="contador-lectores">, vacío</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <p class="aviso" id="aviso" hidden></p>
+
+  <!-- Mayoristas: "¿Sos mayorista? Ingresá" o, si ya ingresó, sus condiciones y "Salir". Lo arma app.js. -->
+  <div class="barra-mayorista" id="barra-mayorista" role="region" aria-label="Mayoristas" hidden></div>
+
+  <main id="contenido" class="contenedor">
+    <!-- Vista del catálogo: buscador, barra lateral de filtros y productos -->
+    <div class="vista-catalogo" id="vista-catalogo">
+      <h1 class="titulo">Catálogo</h1>
+
+      <div class="campo-busqueda">
+        <label for="buscador">Buscar</label>
+        <input type="search" id="buscador" placeholder="Nombre, código o descripción" autocomplete="off" enterkeyhint="search">
+      </div>
+
+      <button type="button" class="boton boton-secundario boton-filtros" id="abrir-filtros" aria-haspopup="dialog" aria-controls="filtros-panel">
+        Categorías y orden <span class="contador" id="filtros-activos" hidden></span>
+      </button>
+
+      <!-- Barra lateral: fija a la izquierda en computadora y tablet; en el celular se abre con "Categorías y orden". -->
+      <dialog class="filtros-panel" id="filtros-panel" aria-labelledby="filtros-titulo">
+        <div class="filtros-cabecera">
+          <h2 id="filtros-titulo">Categorías y orden</h2>
+          <button type="button" class="boton-cerrar" id="cerrar-filtros" aria-label="Cerrar">✕</button>
+        </div>
+        <fieldset class="categorias" id="categorias">
+          <legend>Categorías</legend>
+          <div class="lista-categorias" id="filtros"></div>
+        </fieldset>
+        <div class="campo campo-orden" id="campo-orden">
+          <label for="orden">Ordenar</label>
+          <select id="orden">
+            <option value="destacados">Destacados primero</option>
+            <option value="precio-asc">Menor precio</option>
+            <option value="precio-desc">Mayor precio</option>
+          </select>
+        </div>
+        <button type="button" class="boton boton-primario aplicar-filtros" id="aplicar-filtros">Ver productos</button>
+      </dialog>
+
+      <div class="resultados">
+        <p class="estado" id="estado" role="status" aria-live="polite">Cargando catálogo…</p>
+        <ul class="grilla" id="grilla" aria-busy="true">
+          <li class="tarjeta esqueleto" aria-hidden="true"></li>
+          <li class="tarjeta esqueleto" aria-hidden="true"></li>
+          <li class="tarjeta esqueleto" aria-hidden="true"></li>
+          <li class="tarjeta esqueleto" aria-hidden="true"></li>
+        </ul>
+        <div class="ver-mas-caja">
+          <button type="button" class="boton boton-secundario" id="ver-mas" hidden>Ver más productos</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista de una sección (Quiénes somos, Contacto…): se abre con ?pagina=contacto -->
+    <article class="vista-pagina" id="vista-pagina" hidden></article>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p><strong id="pie-negocio">Catálogo</strong></p>
+      <nav class="pie-menu" id="pie-menu" aria-label="Secciones (pie de página)"></nav>
+      <p id="pie-contacto"></p>
+      <p class="pie-nota">Los precios y la disponibilidad se confirman al responder tu pedido. No se cobra nada en este sitio.</p>
+    </div>
+  </footer>
+
+  <!-- Ingreso de mayoristas: deja sus datos y le llega un enlace por mail -->
+  <dialog class="panel panel-mayorista" id="dialogo-mayorista" aria-labelledby="mayorista-titulo">
+    <div class="panel-cabecera">
+      <h2 id="mayorista-titulo">Ingreso mayoristas</h2>
+      <button type="button" class="boton-cerrar" id="cerrar-mayorista" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="panel-cuerpo">
+      <form class="formulario-mayorista" id="formulario-mayorista" novalidate>
+        <p class="ayuda">Dejá tus datos y te mandamos un enlace a tu mail. Al abrirlo vas a ver los precios mayoristas en este sitio.</p>
+        <div class="campo">
+          <label for="m-nombre">Nombre o razón social *</label>
+          <input id="m-nombre" name="nombre" autocomplete="organization" maxlength="80" aria-describedby="em-nombre">
+          <p class="error-campo" id="em-nombre" hidden></p>
+        </div>
+        <div class="campo">
+          <label for="m-telefono">Teléfono o WhatsApp</label>
+          <input id="m-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" maxlength="30">
+        </div>
+        <div class="campo">
+          <label for="m-mail">Mail *</label>
+          <input id="m-mail" name="mail" type="email" autocomplete="email" maxlength="120" aria-describedby="em-mail">
+          <p class="error-campo" id="em-mail" hidden></p>
+        </div>
+        <!-- Campo trampa contra robots (ver el formulario de pedido) -->
+        <div class="trampa" aria-hidden="true">
+          <label for="m-sitio">No completar este campo</label>
+          <input id="m-sitio" name="sitio_web" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="campo campo-consentimiento">
+          <input type="checkbox" id="m-consentimiento" name="consentimiento" aria-describedby="em-consentimiento">
+          <label for="m-consentimiento" id="m-consentimiento-texto">Acepto que guarden mis datos para enviarme el acceso y responder mis pedidos. No se ceden a terceros. *</label>
+          <p class="error-campo" id="em-consentimiento" hidden></p>
+        </div>
+        <div class="error-envio" id="error-mayorista" role="alert" hidden></div>
+        <button type="submit" class="boton boton-primario" id="enviar-mayorista">Recibir el enlace</button>
+      </form>
+      <div class="confirmacion" id="mayorista-enviado" hidden tabindex="-1">
+        <h3>Revisá tu mail</h3>
+        <p id="mayorista-enviado-texto"></p>
+        <button type="button" class="boton boton-secundario" id="mayorista-listo">Entendido</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Menú de secciones en el celular -->
+  <dialog class="panel panel-menu" id="menu-movil" aria-labelledby="menu-movil-titulo">
+    <div class="panel-cabecera">
+      <h2 id="menu-movil-titulo">Menú</h2>
+      <button type="button" class="boton-cerrar" id="cerrar-menu" aria-label="Cerrar el menú">✕</button>
+    </div>
+    <nav class="panel-cuerpo menu-movil-lista" id="menu-movil-lista" aria-label="Secciones"></nav>
+  </dialog>
+
+  <!-- Página individual de un producto: se abre con un enlace del tipo ?p=P001 -->
+  <dialog class="panel ficha" id="ficha" aria-labelledby="ficha-titulo">
+    <div class="panel-cabecera">
+      <p class="ficha-migas" id="ficha-migas"></p>
+      <button type="button" class="boton-cerrar" id="cerrar-ficha" aria-label="Cerrar y volver al catálogo">✕</button>
+    </div>
+    <div class="panel-cuerpo" id="ficha-cuerpo"></div>
+  </dialog>
+
+  <dialog class="panel" id="panel-pedido" aria-labelledby="titulo-pedido">
+    <div class="panel-cabecera">
+      <h2 id="titulo-pedido">Tu pedido</h2>
+      <button type="button" class="boton-cerrar" id="cerrar-pedido" aria-label="Cerrar el pedido">✕</button>
+    </div>
+
+    <div class="panel-cuerpo">
+      <p class="vacio" id="pedido-vacio">Todavía no agregaste productos. Tocá <strong>Agregar</strong> en los que te interesen.</p>
+
+      <div id="pedido-contenido" hidden>
+        <ul class="lineas" id="lineas"></ul>
+        <div class="totales" id="totales"></div>
+
+        <div class="acciones" id="acciones">
+          <a class="boton boton-whatsapp" id="enviar-whatsapp" href="#" target="_blank" rel="noopener" aria-describedby="ayuda-whatsapp">Enviar por WhatsApp</a>
+          <p class="ayuda" id="ayuda-whatsapp">Se abre WhatsApp con tu pedido ya escrito: solo tenés que enviarlo.</p>
+          <button type="button" class="boton boton-secundario" id="mostrar-formulario" aria-expanded="false" aria-controls="formulario">Prefiero enviarlo por mail</button>
+        </div>
+
+        <form class="formulario" id="formulario" novalidate hidden>
+          <h3>Tus datos</h3>
+          <p class="ayuda">Los campos con * son obligatorios. Dejá al menos un teléfono o un mail.</p>
+
+          <div class="campo">
+            <label for="f-nombre">Nombre *</label>
+            <input id="f-nombre" name="nombre" autocomplete="name" required maxlength="80" aria-describedby="e-nombre">
+            <p class="error-campo" id="e-nombre" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="f-telefono">Teléfono o WhatsApp</label>
+            <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" aria-describedby="e-telefono">
+            <p class="error-campo" id="e-telefono" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="f-mail">Mail</label>
+            <input id="f-mail" name="mail" type="email" autocomplete="email" maxlength="120" aria-describedby="e-mail">
+            <p class="error-campo" id="e-mail" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="f-pago">Forma de pago que preferís</label>
+            <select id="f-pago" name="pago"></select>
+          </div>
+          <div class="campo">
+            <label for="f-comentarios">Comentarios</label>
+            <textarea id="f-comentarios" name="comentarios" rows="3" maxlength="1000" placeholder="Horario de entrega, zona, consultas…"></textarea>
+          </div>
+
+          <!-- Campo trampa contra robots: las personas no lo ven; si llega lleno, el pedido se descarta en silencio. -->
+          <div class="trampa" aria-hidden="true">
+            <label for="f-sitio">No completar este campo</label>
+            <input id="f-sitio" name="sitio_web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <p class="privacidad" id="privacidad"></p>
+
+          <div class="campo campo-consentimiento">
+            <input type="checkbox" id="f-consentimiento" name="consentimiento" aria-describedby="e-consentimiento">
+            <label for="f-consentimiento">Leí el aviso de privacidad y acepto que usen mis datos para responder este pedido. *</label>
+            <p class="error-campo" id="e-consentimiento" hidden></p>
+          </div>
+
+          <div class="error-envio" id="error-envio" role="alert" hidden></div>
+
+          <button type="submit" class="boton boton-primario" id="enviar-formulario">Enviar pedido</button>
+        </form>
+      </div>
+
+      <div class="confirmacion" id="confirmacion" hidden tabindex="-1">
+        <h3>¡Recibimos tu pedido!</h3>
+        <p id="confirmacion-texto"></p>
+        <button type="button" class="boton boton-primario" id="otro-pedido">Hacer otro pedido</button>
+      </div>
+    </div>
+  </dialog>
+</body>
+</html>

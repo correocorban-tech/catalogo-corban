@@ -1,0 +1,22 @@
+# Ajustes de Netlify (este archivo no se ve en el sitio).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Las fotos se guardan 1 día en el celular del visitante: cargan más rápido y gastan menos ancho de banda.
+# Si reemplazás una foto con el mismo nombre, puede tardar hasta un día en verse el cambio.
+/fotos/*
+  Cache-Control: public, max-age=86400
+
+# La tipografía no cambia: se guarda un año.
+/fuentes/*
+  Cache-Control: public, max-age=31536000
+
+# Estos archivos se revisan siempre, para que un cambio se vea en cuanto se publica.
+/config.js
+  Cache-Control: no-cache
+/app.js
+  Cache-Control: no-cache
+/estilos.css
+  Cache-Control: no-cache
