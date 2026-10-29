@@ -16,7 +16,7 @@
   --pocas: #8a4b00; --pocas-fondo: #fff3df;
   --error: #b3261e; --error-fondo: #fdecea;
 
-  --alto-logo: 72px;        /* tamaño del logo en el celular (en computadora, ver más abajo) */
+  --alto-logo: 72px;        /* tamaño del logo en el celular (en tablet y computadora, ver más abajo) */
 
   --radio: 10px;
   /* Tipografía: Montserrat, guardada en sitio/fuentes (licencia libre OFL). Para cambiarla, reemplazá
@@ -402,10 +402,22 @@ a.foto { display: block; }
 }
 
 /* ---------- Computadora: menú de secciones a la vista ---------- */
-/* El menú a la vista desde 1100px: con el logo grande, en pantallas más angostas no entra en una línea y se usa ☰. */
-@media (min-width: 1100px) {
+/* El menú a la vista desde 1200px: con el logo grande, en pantallas más angostas no entra en una línea y se usa ☰. */
+@media (min-width: 1200px) {
+  /* Solo en computadora: cabecera más grande. El celular y la tablet quedan como antes. */
+  :root { --alto-logo: 120px; }
+  .cabecera-fila { min-height: 132px; }
+  .menu a { font-size: 1rem; padding: 8px 8px; }
+  .boton-pedido { font-size: 1.05rem; min-height: 50px; padding: 8px 18px; }
   .menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; flex: 1; min-width: 0; }
   .boton-menu { display: none !important; }
+}
+/* Pantallas de computadora más anchas: todavía más grande (hay lugar para que el menú entre en una línea). */
+@media (min-width: 1400px) {
+  :root { --alto-logo: 136px; }
+  .cabecera-fila { min-height: 148px; max-width: 1340px; }
+  .menu a { font-size: 1.15rem; padding: 8px 10px; }
+  .boton-pedido { font-size: 1.15rem; min-height: 54px; padding: 8px 22px; }
 }
 
 /* ---------- Tablet y computadora: categorías fijas en el lateral izquierdo ----------
