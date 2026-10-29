@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lista de direcciones del sitio para Google. Si se agrega una sección en la hoja Páginas, se suma acá. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://corban.com.ar/</loc></url>
+  <url><loc>https://corban.com.ar/?pagina=quienes-somos</loc></url>
+  <url><loc>https://corban.com.ar/?pagina=envios-y-pagos</loc></url>
+  <url><loc>https://corban.com.ar/?pagina=preguntas-frecuentes</loc></url>
+  <url><loc>https://corban.com.ar/?pagina=contacto</loc></url>
+</urlset>

@@ -17,6 +17,15 @@ RewriteRule ^ https://%{HTTP_HOST}/%1 [L,R=301,NE]
 RewriteCond %{THE_REQUEST} \s/index\.html
 RewriteRule ^ https://%{HTTP_HOST}/ [L,R=301]
 
+#    Direcciones del WordPress anterior que Google todavía muestra: van a la sección equivalente.
+RewriteRule ^nosotros/?$ https://%{HTTP_HOST}/?pagina=quienes-somos [L,R=301]
+RewriteRule ^contacto/?$ https://%{HTTP_HOST}/?pagina=contacto [L,R=301]
+RewriteRule ^productos/?$ https://%{HTTP_HOST}/ [L,R=301]
+#    Cualquier otra página vieja terminada en "/" que ya no existe: al catálogo (no toca fotos ni archivos).
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.+/$ https://%{HTTP_HOST}/ [L,R=301]
+
 # 3. Cuánto guarda el celular del visitante cada archivo. DonWeb, por su cuenta, guarda
 #    estilos, fuentes y fotos 7 días: esto lo corrige. El código del sitio (html, css, js)
 #    se revisa siempre, así un cambio publicado se ve enseguida.

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://corban.com.ar/sitemap.xml

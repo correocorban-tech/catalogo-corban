@@ -82,9 +82,22 @@ h1, h2, h3 { color: var(--azul); line-height: 1.2; margin: 0; font-weight: 700; 
 .boton-whatsapp:hover { filter: brightness(.92); }
 
 /* ---------- Cabecera ---------- */
-.cabecera { background: var(--azul); color: var(--blanco); position: sticky; top: 0; z-index: 10; }
-.cabecera-fila { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; padding-top: 6px; padding-bottom: 6px; }
-.marca { color: var(--blanco); font-weight: 700; font-size: 1.2rem; text-decoration: none; min-width: 0; display: flex; align-items: center; }
+.cabecera { background: var(--azul); color: var(--blanco); position: sticky; top: 0; z-index: 10; overflow: hidden; }
+.cabecera-fila { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
+/* El logo va sobre una zona blanca que llega hasta el borde izquierdo y termina en diagonal;
+   el resto de la cabecera queda azul. Para cambiar el ángulo, tocar --diagonal. */
+.marca {
+  --diagonal: 44px;
+  position: relative; z-index: 0; align-self: stretch;
+  padding: 6px calc(var(--diagonal) + 12px) 6px 0;
+  color: var(--azul); font-weight: 700; font-size: 1.2rem; text-decoration: none; min-width: 0; display: flex; align-items: center;
+}
+.marca::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; right: 0; left: -100vw;
+  background: var(--blanco);
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--diagonal)) 100%, 0 100%);
+}
+.cabecera .marca:focus-visible { outline-color: var(--azul); }
 .marca .logo { height: var(--alto-logo); width: auto; max-width: 55vw; object-fit: contain; }
 /* Vuelve blanco cualquier logo de un solo color (ver logoEnBlanco en config.js) */
 .marca .logo-blanco { filter: brightness(0) invert(1); }
@@ -389,7 +402,8 @@ a.foto { display: block; }
 }
 
 /* ---------- Computadora: menú de secciones a la vista ---------- */
-@media (min-width: 900px) {
+/* El menú a la vista desde 1100px: con el logo grande, en pantallas más angostas no entra en una línea y se usa ☰. */
+@media (min-width: 1100px) {
   .menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; flex: 1; min-width: 0; }
   .boton-menu { display: none !important; }
 }

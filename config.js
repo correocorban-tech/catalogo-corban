@@ -15,11 +15,11 @@ window.CONFIG_SITIO = {
 
   // Logo (opcional): poné el archivo dentro de la carpeta del sitio y escribí su nombre, ej. 'logo.svg'.
   // Vacío = se muestra el nombre del negocio escrito. Se ve sobre la franja azul: conviene una versión blanca.
-  logo: 'logo.svg',
+  logo: 'logo-azul.svg',
 
   // true = el logo se muestra en BLANCO, sea del color que sea el archivo (sirve para logos de un solo
   // color, como un SVG negro). false = se muestra con sus colores originales (logos a color).
-  logoEnBlanco: true,
+  logoEnBlanco: false,
 
   // Carpeta de las fotos (dentro de la carpeta del sitio). Cada foto se llama como el código: P001.webp
   carpetaFotos: 'fotos/',

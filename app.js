@@ -21,6 +21,7 @@
   const pesos = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0, minimumFractionDigits: 0 });
   const plata = n => pesos.format(Math.round(n));
 
+  const TITULO_INICIAL = document.title; // el de index.html, antes de que el sitio lo cambie
   const estado = {
     catalogo: null,
     porCodigo: {},
@@ -308,7 +309,8 @@
   function pintarNegocio() {
     const n = negocio();
     const nombre = n.nombre_negocio || 'Catálogo';
-    estado.tituloBase = nombre + ' — Catálogo';
+    // El título del catálogo es el de index.html (el que lee Google); si no tiene uno propio, se arma con el nombre.
+    estado.tituloBase = /^cat[aá]logo$/i.test(TITULO_INICIAL) ? nombre + ' — Catálogo' : TITULO_INICIAL;
     if (!ficha.codigo) document.title = estado.tituloBase;
     pintarMarca(nombre);
     $('pie-negocio').textContent = nombre;
